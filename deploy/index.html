@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#050810" />
+  <script>
+    // Silence harmless ResizeObserver loop warnings at the earliest possible point
+    window.addEventListener('error', function(e) {
+      if (e.message && e.message.indexOf('ResizeObserver') !== -1) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        return false;
+      }
+    }, true);
+  </script>
+  <title>The Solar System & Bosco — A Field Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bg" cx="50%" cy="45%" r="60%">
+          <stop offset="0%" stop-color="#1a2548"/>
+          <stop offset="100%" stop-color="#050810"/>
+        </radialGradient>
+        <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff8d8"/>
+          <stop offset="60%" stop-color="#ffcd45"/>
+          <stop offset="100%" stop-color="#ff8a1a"/>
+        </radialGradient>
+      </defs>
+      <rect width="200" height="200" fill="url(#bg)"/>
+      <!-- Tiny stars -->
+      <circle cx="30" cy="40" r="1" fill="#fff" opacity="0.7"/>
+      <circle cx="170" cy="60" r="1" fill="#fff" opacity="0.6"/>
+      <circle cx="50" cy="170" r="1" fill="#fff" opacity="0.5"/>
+      <circle cx="160" cy="150" r="1.2" fill="#fff" opacity="0.6"/>
+      <circle cx="100" cy="30" r="0.8" fill="#fff" opacity="0.5"/>
+      <!-- Orbit rings -->
+      <ellipse cx="100" cy="100" rx="42" ry="42" fill="none" stroke="rgba(212,163,92,0.25)" stroke-width="0.5"/>
+      <ellipse cx="100" cy="100" rx="62" ry="62" fill="none" stroke="rgba(212,163,92,0.18)" stroke-width="0.5"/>
+      <!-- Sun -->
+      <circle cx="100" cy="100" r="14" fill="url(#sun)"/>
+      <!-- Earth -->
+      <circle cx="142" cy="100" r="4" fill="#5b9fd9"/>
+      <!-- Saturn with ring -->
+      <ellipse cx="100" cy="38" rx="9" ry="2" fill="none" stroke="rgba(212,180,130,0.7)" stroke-width="1"/>
+      <circle cx="100" cy="38" r="4" fill="#e8c98f"/>
+      <!-- Title bar -->
+      <text x="100" y="190" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="11" fill="#d4a35c">Solar System</text>
+    </svg>
+  </template>
+
+  <div id="root"></div>
+
+  <script>
+    // Suppress harmless ResizeObserver loop warnings at every level
+    (function() {
+      const OrigRO = window.ResizeObserver;
+      if (OrigRO) {
+        window.ResizeObserver = class extends OrigRO {
+          constructor(cb) {
+            super((entries, obs) => {
+              requestAnimationFrame(() => { try { cb(entries, obs); } catch(e){} });
+            });
+          }
+        };
+      }
+      const handler = (e) => {
+        const msg = e.message || (e.error && e.error.message) || '';
+        if (msg.indexOf('ResizeObserver') !== -1) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          return false;
+        }
+      };
+      window.addEventListener('error', handler, true);
+      window.addEventListener('unhandledrejection', handler, true);
+      const origError = console.error;
+      console.error = function(...args) {
+        const s = args.map(a => String(a)).join(' ');
+        if (s.indexOf('ResizeObserver') !== -1) return;
+        return origError.apply(this, args);
+      };
+    })();
+  </script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="data.js"></script>
+  <script type="text/babel" data-presets="react" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" data-presets="react" src="planet-render.jsx"></script>
+  <script type="text/babel" data-presets="react" src="orbital-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="planet-detail.jsx"></script>
+  <script type="text/babel" data-presets="react" src="compare-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="quiz-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="think-cards.jsx"></script>
+  <script type="text/babel" data-presets="react" src="think-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="lesson-engine.jsx"></script>
+  <script type="text/babel" data-presets="react" src="lessons-earth.jsx"></script>
+  <script type="text/babel" data-presets="react" src="lessons-earth2.jsx"></script>
+  <script type="text/babel" data-presets="react" src="lessons-cosmos.jsx"></script>
+  <script type="text/babel" data-presets="react" src="lessons-physics.jsx"></script>
+  <script type="text/babel" data-presets="react" src="explore-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="mission-view.jsx"></script>
+  <script type="text/babel" data-presets="react" src="app.jsx"></script>
+</body>
+</html>
