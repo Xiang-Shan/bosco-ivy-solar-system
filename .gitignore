@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Local archives (we don't need to deploy these)
+*.zip
+
+# Logs
+*.log
