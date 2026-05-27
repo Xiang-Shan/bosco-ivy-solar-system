@@ -121,10 +121,13 @@ window.SeasonsLesson = function SeasonsLesson({ speak }) {
               <line x1="-42" y1="-12" x2="42" y2="-12" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
               <line x1="-42" y1="0" x2="42" y2="0" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
               <line x1="-42" y1="12" x2="42" y2="12" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-              {/* Day/night terminator based on sun direction */}
+              {/* Day/night terminator — dark hemisphere points AWAY from sun in world space.
+                  The path draws a right-semicircle by default; rotating it by atan2(earthY-sunCy, earthX-sunCx)
+                  aligns the right-semicircle direction with the anti-sun vector. The -tilt cancels the parent
+                  tilt group so the terminator stays in world space (tilt doesn't move the day/night line). */}
               <path d="M 0 -42 A 42 42 0 0 1 0 42 L 0 -42 Z"
                     fill="rgba(0,0,0,0.5)"
-                    transform={`rotate(${-tilt + (Math.atan2(earthY - sunCy, earthX - sunCx) * 180 / Math.PI - 90)})`} />
+                    transform={`rotate(${-tilt + (Math.atan2(earthY - sunCy, earthX - sunCx) * 180 / Math.PI)})`} />
             </g>
             {/* N/S labels */}
             <text x={Math.sin(tilt * Math.PI / 180) * 56} y={-Math.cos(tilt * Math.PI / 180) * 56 + 4}

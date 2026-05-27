@@ -196,13 +196,14 @@ window.MoonPhasesLesson = function MoonPhasesLesson({ speak }) {
                   stroke="rgba(255, 200, 100, 0.5)" strokeWidth="1" />
           </g>
 
-          {/* Moon — draggable, rendered in actual orientation (lit side toward sun) */}
+          {/* Moon — draggable. Rendered as half-lit (phase 0.25 = right half lit), then rotated
+              so the lit half always points toward the Sun. This matches reality: the Moon's
+              sun-facing hemisphere is always lit, only our viewing angle changes. */}
           <g transform={`translate(${moonX}, ${moonY}) rotate(${Math.atan2(250 - moonY, 540 - moonX) * 180 / Math.PI})`}
              style={{ cursor: 'grab' }}
              onPointerDown={onPointerDown}>
             <circle r="32" fill="rgba(232, 226, 212, 0.05)" />
-            <MoonGlyph phase={0.5} size={48} />
-            {/* The orientation rotation makes the lit half point toward sun */}
+            <MoonGlyph phase={0.25} size={48} />
           </g>
 
           {/* "How we see it from Earth" preview circle near Earth */}
@@ -327,8 +328,8 @@ window.DayNightLesson = function DayNightLesson({ speak }) {
               <ellipse cx="0" cy={-earthR + 8} rx="50" ry="14" fill="#f0f6fa" opacity="0.65" />
               <ellipse cx="0" cy={earthR - 8} rx="60" ry="14" fill="#f0f6fa" opacity="0.7" />
             </g>
-            {/* Day/night terminator — straight half overlay */}
-            <path d={`M 0 ${-earthR} A ${earthR} ${earthR} 0 0 1 0 ${earthR} L 0 ${-earthR} Z`} fill="rgba(0,0,0,0.6)" />
+            {/* Day/night terminator — dark side faces AWAY from sun (sun is to the right, so left half is night) */}
+            <path d={`M 0 ${-earthR} A ${earthR} ${earthR} 0 0 0 0 ${earthR} L 0 ${-earthR} Z`} fill="rgba(0,0,0,0.6)" />
           </g>
 
           {/* Person pin */}
